@@ -1,6 +1,7 @@
 <?php
 class SearchEngine
 {
+  //member variables
   private $btnLabel = '';
   private $btnStyle = array();
   private $searchPattern1 = '';
@@ -17,6 +18,7 @@ class SearchEngine
   }
 
   public function displayButton(){
+    //build text to generate uniform button
     $result = '<input type="submit" name="search_eng" value="';
     $result .= $this->btnLabel;
     $result .= '" class="';
@@ -27,6 +29,7 @@ class SearchEngine
   }
 
   public function doSearch($searchBox){
+    //gets called when a search is actually performed, technically upon page reload
     $url = $this->searchPattern1;
     switch($this->postType){
       case 'raw':
@@ -42,6 +45,7 @@ class SearchEngine
   }
 }
 
+//The master list of search engines.  Customizable.
 $search_engines = array(
 'Google' => new SearchEngine(
   'Google',array('btn','btn-primary'),'plus',
@@ -63,6 +67,8 @@ $search_engines = array(
   'http://www.github.com/','')
 );
 
+//Code triggered when data has been posted.
+//The doSearch function will generate a "location" header, so we want to execute this before any data has been sent
 if(isset($_POST['search_eng'])){
   if(isset($search_engines[$_POST['search_eng']])){
     $thisEng = $search_engines[$_POST['search_eng']];
@@ -90,6 +96,7 @@ if(isset($_POST['search_eng'])){
   <form name="main" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" />
   <input type="text" name="search_input" class='searchbox' autofocus />
   <?php
+  //Call the button generation code for each button in the set
   foreach($search_engines as $name=>$engine){
     print $engine->displayButton();
   } ?>
